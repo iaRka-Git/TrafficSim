@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Calculator.ViewModels
+namespace TrafficSim.Services
 {
     public class RelayCommand:ICommand
     {

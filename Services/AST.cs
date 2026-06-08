@@ -2,7 +2,7 @@
 using System.Data;
 using System.Text.RegularExpressions;
 
-namespace TrafficSim
+namespace TrafficSim.Services
 {
     public abstract class Node
     {

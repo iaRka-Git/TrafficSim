@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\EnumToBooleanConvertor.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Algorythms\" />
   </ItemGroup>
 

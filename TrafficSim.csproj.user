@@ -5,6 +5,9 @@
     <Compile Update="Views\EditorWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\MapGridControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\SimulationWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

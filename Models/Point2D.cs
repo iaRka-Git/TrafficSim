@@ -8,8 +8,8 @@ namespace TrafficSim.Models
 {
     public struct Point2D
     {
-        public double X { get; set; }
-        public double Y { get; set; }
+        public double X { get; }
+        public double Y { get; }
 
         public Point2D(double x, double y)
         {

@@ -1,36 +1,53 @@
-﻿using TrafficSim.Services;
-using System;
+﻿using System;
+using TrafficSim.Models;
+using TrafficSim.Services;
 
-namespace TrafficSim.Models
+namespace TrafficSim.ViewModels.Items
 {
+    /// <summary>
+    /// Візуальан модель абстрактного вузла
+    /// </summary>
     public abstract class PointNodeVisualModel : BaseViewModel
     {
         public PointNode Model { get; }
-
-        private double _screenX;
-        public double ScreenX
-        {
-            get => _screenX;
-            set => SetProperty(ref _screenX, value);
-        }
-
-        private double _screenY;
-        public double ScreenY
-        {
-            get => _screenY;
-            set => SetProperty(ref _screenY, value);
-        }
 
         private double _diameter;
         public double Diameter
         {
             get => _diameter;
-            set => SetProperty(ref _diameter, value);
+            set
+            {
+                if (SetProperty(ref _diameter, value))
+                {
+                    OnPropertyChanged(nameof(ScreenX));
+                    OnPropertyChanged(nameof(ScreenY));
+                }
+            }
         }
 
-        protected PointNodeVisualModel(PointNode model)
+        public double ScreenX => _centerX - (Diameter / 2);
+        public double ScreenY => _centerY - (Diameter / 2);
+
+        private double _centerX;
+        private double _centerY;
+
+        protected PointNodeVisualModel(PointNode model, double baseDiameter = 20)
         {
             Model = model ?? throw new ArgumentNullException(nameof(model));
+            _diameter = baseDiameter;
+        }
+
+        public void UpdateScreenPosition(double viewportWidth, double viewportHeight, double zoom, double offsetX, double offsetY)
+        {
+            Diameter *= zoom;
+
+            var screenPt = CoordinateTransformService.ToScreen(Model.Position, viewportWidth, viewportHeight, zoom, offsetX, offsetY);
+
+            _centerX = screenPt.X;
+            _centerY = screenPt.Y;
+
+            OnPropertyChanged(nameof(ScreenX));
+            OnPropertyChanged(nameof(ScreenY));
         }
     }
 
@@ -41,6 +58,10 @@ namespace TrafficSim.Models
 
     public class MobilityJointVisualModel : PointNodeVisualModel
     {
-        public MobilityJointVisualModel(MobilityJoint model) : base(model) { }
+        public RoadVisualModel ParentRoad { get; }
+        public MobilityJointVisualModel(MobilityJoint model,RoadVisualModel parentRoad) : base(model,15) 
+        {
+            ParentRoad = parentRoad ?? throw new ArgumentNullException(nameof(parentRoad));
+        }
     }
 }

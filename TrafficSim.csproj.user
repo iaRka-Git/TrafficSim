@@ -5,7 +5,19 @@
     <Compile Update="Views\EditorWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\MapGridControl.xaml.cs">
+    <Compile Update="Views\Layers\GridAxesLayer.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Layers\GridLinesLayer.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\MapWorkSpaceControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Layers\NodesLayer.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Layers\RoadsLayer.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SimulationWindow.xaml.cs">

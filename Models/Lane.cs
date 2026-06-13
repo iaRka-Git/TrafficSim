@@ -1,28 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
+using System.Text.Json.Serialization;
 
 namespace TrafficSim.Models
 {
     public class Lane
     {
         public Guid Id { get; }
-
-        public RoadNode StartNode { get; }
-        public RoadNode EndNode { get; }
-
+        public RoadNode LogicalStart { get; }
+        public RoadNode LogicalEnd { get; }
+        public double LaneWidth{ get; }
         public RoadGroup ParentGroup { get; }
-        public double NormalOffset { get; } 
 
-        public List<Point2D> Waypoints { get; set; } = new();
+        private readonly List<Point2D> _waypoints = new();
+        public IReadOnlyList<Point2D> Waypoints => _waypoints;
 
-        public Lane(Guid id, RoadNode startNode, RoadNode endNode, RoadGroup parentGroup, double normalOffset)
+        public double NormalOffset { get; }
+
+        public Lane(RoadNode logicalStart, RoadNode logicalEnd, RoadGroup parentGroup, double normalOffset, Guid id,double? width = null)
         {
-            Id = id;
-            StartNode = startNode ?? throw new ArgumentNullException(nameof(startNode));
-            EndNode = endNode ?? throw new ArgumentNullException(nameof(endNode));
+            LogicalStart = logicalStart ?? throw new ArgumentNullException(nameof(logicalStart));
+            LogicalEnd = logicalEnd ?? throw new ArgumentNullException(nameof(logicalEnd));
             ParentGroup = parentGroup ?? throw new ArgumentNullException(nameof(parentGroup));
             NormalOffset = normalOffset;
+            Id = id;
+            LaneWidth = width ?? SimConfig.DefaultLaneWidth;
+        }
+
+        public void UpdateWaypoints(IEnumerable<Point2D> newWaypoints)
+        {
+            _waypoints.Clear();
+            if (newWaypoints != null)
+            {
+                _waypoints.AddRange(newWaypoints);
+            }
         }
     }
 }

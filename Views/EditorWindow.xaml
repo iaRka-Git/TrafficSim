@@ -7,7 +7,7 @@
         Title="Редактор міста" Height="600" Width="900">
 
     <Window.DataContext>
-        <vm:EditorViewModel />
+        <vm:EditorViewModel/>
     </Window.DataContext>
 
     <Window.InputBindings>
@@ -49,7 +49,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <views:MapGridControl Grid.Row="0" Panel.ZIndex="0" />
+        <views:MapWorkSpaceControl Grid.Row="0" Panel.ZIndex="0" />
 
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Orientation="Horizontal" Panel.ZIndex="1">
             <StackPanel.RenderTransform>

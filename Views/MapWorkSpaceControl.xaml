@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="TrafficSim.Views.MapWorkSpaceControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:layers="clr-namespace:TrafficSim.Views.Layers"
+             Background="White">
+
+    <Grid x:Name="ViewportGrid" Background="Transparent" ClipToBounds="True"
+      SizeChanged="ViewportGrid_SizeChanged"
+      MouseMove="ViewportGrid_MouseMove"
+      MouseWheel="ViewportGrid_MouseWheel"
+      MouseLeftButtonDown="ViewportGrid_MouseLeftButtonDown"
+      MouseLeftButtonUp="ViewportGrid_MouseLeftButtonUp"
+      MouseRightButtonDown="ViewportGrid_MouseRightButtonDown" 
+      MouseRightButtonUp="ViewportGrid_MouseRightButtonUp">
+
+        <layers:GridLinesLayer />
+
+        <layers:RoadsLayer />
+
+        <layers:NodesLayer />
+
+        <layers:GridAxesLayer />
+
+    </Grid>
+</UserControl>

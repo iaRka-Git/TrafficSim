@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TrafficSim.Models
 {
+    /// <summary>
+    /// Базовий абстрактний клас для будь-якої точки на карті
+    /// </summary>
     public abstract class PointNode
     {
+        // Унікальний ідентифікатор вузла
         public Guid Id { get; }
-
-        public Point2D Position { get; set; } = new Point2D();
+        public Point2D Position { get; set; }
 
         protected PointNode(Guid id, Point2D position)
         {

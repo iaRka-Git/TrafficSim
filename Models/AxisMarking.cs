@@ -1,20 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TrafficSim.Models
+﻿namespace TrafficSim.Models
 {
-    public class AxisMarking
+    /// <summary>
+    /// Модель для позначок на осях координат
+    /// </summary>
+    public struct AxisMarking
     {
         public double ScreenX { get; set; }
         public double ScreenY { get; set; }
-        public string Text { get; set; }
+        public bool IsMajor { get; set; }
     }
 
-    public class GridLineModel
+    /// <summary>
+    /// Модель для ліній сітки
+    /// </summary>
+    public struct GridLineModel
     {
         public double ScreenPos { get; set; }
+        public bool IsMajor { get; set; }
     }
 }

@@ -1,45 +1,81 @@
 ﻿using System;
 using System.Collections.Generic;
+using TrafficSim.Services; 
 
 namespace TrafficSim.Models
 {
+    /// <summary>
+    /// Логічна дорога(група смуг) між двома перехрестями
+    /// </summary>
     public class RoadGroup
     {
-        public Guid Id { get; }
+        public Guid Id { get; } = Guid.NewGuid();
 
         public RoadNode StartNode { get; }
         public RoadNode EndNode { get; }
 
-        private readonly List<MobilityJoint> _controlPoints = new();
-        public IReadOnlyList<MobilityJoint> ControlPoints => _controlPoints.AsReadOnly();
-
+        // Приватна колекція смуг
         private readonly List<Lane> _lanes = new();
-        public IReadOnlyList<Lane> Lanes => _lanes.AsReadOnly();
+        public IReadOnlyList<Lane> Lanes => _lanes;
 
-        public const double DefaultLaneWidth = 3.0;
-        public double TotalWidth => _lanes.Count * DefaultLaneWidth;
+        // Контрольні точки для кривої Катмул-Рома
+        private readonly List<MobilityJoint> _controlPoints = new();
+        public IReadOnlyList<MobilityJoint> ControlPoints => _controlPoints;
 
-        public RoadGroup(Guid id, RoadNode startNode, RoadNode endNode)
+        public double LaneWidth { get; set; }
+
+        public double TotalWidth => _lanes.Count * LaneWidth;
+
+        // Параметри обрізання об багатокутники перехресть
+        public double TrimmedStartParameter { get; set; } = 0.0;
+        public double TrimmedEndParameter { get; set; } = 1.0;
+
+        public RoadGroup(
+            RoadNode startNode,
+            RoadNode endNode,
+            IEnumerable<Lane> initialLanes = null,
+            double? customLaneWidth = null)
         {
-            Id = id;
             StartNode = startNode ?? throw new ArgumentNullException(nameof(startNode));
             EndNode = endNode ?? throw new ArgumentNullException(nameof(endNode));
-        }
 
-        public void AddControlPoint(MobilityJoint joint)
-        {
-            if (joint != null && !_controlPoints.Contains(joint))
-                _controlPoints.Add(joint);
+            LaneWidth = customLaneWidth ?? SimConfig.DefaultLaneWidth;
+
+            if (initialLanes != null)
+            {
+                AddLanes(initialLanes);
+            }
         }
 
         public void AddLane(Lane lane)
         {
-            if (lane != null && !_lanes.Contains(lane))
+            if (lane == null) return;
+
+            if (!_lanes.Contains(lane))
             {
                 _lanes.Add(lane);
 
-                StartNode.RegisterLane(lane);
-                EndNode.RegisterLane(lane);
+                lane.LogicalStart.RegisterOutgoingLane(lane);
+                lane.LogicalEnd.RegisterIncomingLane(lane);
+            }
+        }
+
+        public void AddLanes(IEnumerable<Lane> lanes)
+        {
+            if (lanes == null) return;
+
+            foreach (Lane one in lanes)
+            {
+                AddLane(one);
+            }
+        }
+
+        public void UpdateControlPoints(IEnumerable<MobilityJoint> points)
+        {
+            _controlPoints.Clear();
+            if (points != null)
+            {
+                _controlPoints.AddRange(points);
             }
         }
     }
